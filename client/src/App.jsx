@@ -20,6 +20,8 @@ export default function App() {
   const [iconStyle, setIconStyle] = useState({ background: '#ffffff', foreground: '#2b1f0f' })
 
   const [produceData, setProduceData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [dataError, setDataError] = useState(undefined)
   useEffect(() => {
     axios.get('/api/produce')
       .then((response) => {
@@ -120,13 +122,13 @@ export default function App() {
 
   return (
     <main>
-      {true && // TODO: show when rejected
+      {!!dataError && // TODO: show when rejected
         <Alert message="Error fetching produce data." />
       }
 
       <h2>Component Library & HTTP Request Data</h2>
       <div className="space-x-4">
-        {true && // TODO: show when pending
+        {!!isLoading && // TODO: show when pending
           <ul className="flex flex-wrap gap-2">
             {Array.from({ length: 16 }).map((_, index) => (
               <li className="inline-block" key={index}>
@@ -136,7 +138,7 @@ export default function App() {
           </ul>
         }
 
-        {true && // TODO: show when fulfilled
+        {producedData && // TODO: show when fulfilled
           <ul className="flex flex-wrap gap-2">
             {produceData.map((item) => (
               <li className="inline-block" key={item.id}>
