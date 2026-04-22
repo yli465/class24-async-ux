@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useDebouce } from 'use-debounce'
 
 import Button from './components/library/Button'
 import Card from './components/Card'
@@ -22,14 +23,17 @@ export default function App() {
   const [produceData, setProduceData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [dataError, setDataError] = useState(undefined)
+  const [searchParam] = useDebounce(searchQuery, 500)
   useEffect(() => {
     axios.get('/api/produce')
       .then((response) => {
         setProduceData(response.data)
       })
       .catch((error) => {
+        setDataError(error)
       })
       .finally(() => {
+        setIsLoading(false)
       })
   }, [])
 
