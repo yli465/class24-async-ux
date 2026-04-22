@@ -1,0 +1,39 @@
+name: ${COMPOSE_PROJECT_NAME}
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+    depends_on:
+      db:
+        condition: service_started
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  db:
+    image: mongo:latest
+    restart: unless-stopped
+    volumes:
+      - mongodb-data:/data/db
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+
+    # Uncomment to change startup options
+    # environment:
+    #  MONGO_INITDB_ROOT_USERNAME: root
+    #  MONGO_INITDB_ROOT_PASSWORD: example
+    #  MONGO_INITDB_DATABASE: your-database-here
+
+    # Add "forwardPorts": ["27017"] to **devcontainer.json** to forward MongoDB locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+volumes:
+  mongodb-data:

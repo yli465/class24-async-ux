@@ -1,0 +1,36 @@
+/*
+# HTTP Server Tests
+*/
+@host http://localhost:8080
+/*
+## Static Website Requests
+*/
+###
+GET /index.html
+###
+GET /styles/site.css
+/*
+## API Requests
+*/
+###
+GET /api/documents
+###
+GET /api/produce
+###
+GET /api/produce/69c3d6d488562e515a8ce5c5
+/*
+Use query strings to filter documents (if the API supports it).
+*/
+###
+GET /api/produce?country=Mexico
+###
+GET /api/produce?country=mexico
+###
+GET /api/produce?country=Mexico&category=fruit
+/*
+We should make sure that if we request a document that doesn't exist, we get a 404 response:
+*/
+###
+GET /api/produce/aac3d6d488562e515a8ce5c5
+###
+GET /api/produce/3i98kl-no-such-doc-id-sdlfkj
